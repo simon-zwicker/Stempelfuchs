@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Octopus
 
 @main
 struct StempelfuchsApp: App {
