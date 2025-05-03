@@ -13,6 +13,7 @@ enum OnboardingStep: CaseIterable, Identifiable {
 
 	case name
 	case workHours
+	case breakTime
 	case vacations
 	case timeAccount
 }
@@ -25,6 +26,7 @@ extension OnboardingStep {
 			switch self {
 			case .name: OnboardingName()
 			case .workHours: OnboardingHours()
+			case .breakTime: Text("Pausenzeit")
 			case .vacations: Text("Urlaub")
 			case .timeAccount: Text("Zeitkonto")
 			}
@@ -34,7 +36,8 @@ extension OnboardingStep {
 	var nextStep: Self {
 		switch self {
 		case .name: .workHours
-		case .workHours: .vacations
+		case .workHours: .breakTime
+		case .breakTime: .vacations
 		case .vacations: .timeAccount
 		case .timeAccount: .timeAccount
 		}

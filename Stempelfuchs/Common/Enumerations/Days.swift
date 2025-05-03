@@ -19,6 +19,18 @@ enum Days: String, CaseIterable, Identifiable {
 }
 
 extension Days {
+	var name: String {
+		switch self {
+		case .monday: "Montag"
+		case .tuesday: "Dienstag"
+		case .wednesday: "Mittwoch"
+		case .thursday: "Donnerstag"
+		case .friday: "Freitag"
+		case .saturday: "Samstag"
+		case .sunday: "Sonntag"
+		}
+	}
+
 	static var defaultDays: [Self] {
 		[.monday, .tuesday, .wednesday, .thursday, .friday]
 	}

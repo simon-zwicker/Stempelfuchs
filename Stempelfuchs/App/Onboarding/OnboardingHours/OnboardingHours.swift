@@ -19,7 +19,7 @@ struct OnboardingHours: View {
 		@Bindable var model = model
 
 		VStack {
-			Text("Wochenarbeitsstunden")
+			Text("Stunden pro Woche")
 				.foregroundStyle(.secondary)
 
 			HStack {
@@ -52,70 +52,48 @@ struct OnboardingHours: View {
 					.frame(maxWidth: .infinity)
 			}
 
-			VStack(spacing: 25) {
-				Text("Wochentage")
-					.foregroundStyle(.secondary)
+			Text("\(model.workTimeDayHour):\(model.workTimeDayMinute)\(model.workTimeDayMinute > 0 ? "": "0") pro Tag")
+				.font(.Bold.small)
+				.contentTransition(.numericText(value: model.workTimePerDay))
 
-				HStack {
-					ForEach(Days.defaultDays) { day in
-						HStack {
-							Rectangle()
-								.fill(model.workDays.contains(day) ? .main: .clear)
-								.stroke(.main, lineWidth: 2)
-								.frame(width: 20, height: 20)
-								.overlay {
-									Image(systemName: "checkmark")
-										.font(.Bold.small)
-										.foregroundStyle(.white)
-										.opacity(model.workDays.contains(day) ? 1.0: 0.0)
-								}
+			Text("Wochentage")
+				.foregroundStyle(.secondary)
+				.padding(.top, 15)
+				.padding(.bottom, 10)
 
-							Text(day.rawValue)
-								.font(.Bold.regular)
-								.foregroundStyle(.black)
-						}
-						.frame(maxWidth: .infinity)
-						.button {
-							withAnimation {
-								model.toggleDay(day)
+			LazyVGrid(columns: 2.grid, spacing: 20) {
+				ForEach(Days.allCases) { day in
+					HStack {
+						Rectangle()
+							.fill(model.dayButtonFilled(for: day))
+							.stroke(
+								model.dayButtonStroke(for: day).color,
+								lineWidth: model.dayButtonStroke(for: day).stroke
+							)
+							.frame(width: 20, height: 20)
+							.overlay {
+								Image(systemName: "checkmark")
+									.font(.Bold.small)
+									.foregroundStyle(.white)
+									.opacity(model.workDays.contains(day) ? 1.0: 0.0)
 							}
+
+						Text(day.name)
+							.font(.Bold.regular)
+							.foregroundStyle(.black)
+
+						Spacer()
+					}
+					.frame(maxWidth: .infinity)
+					.button {
+						withAnimation {
+							model.toggleDay(day)
 						}
 					}
+					.disabled(model.dayButtonDisabled(for: day))
 				}
 			}
-			.padding(.vertical, 30)
-
-			VStack(spacing: 25) {
-				Text("Wochenendtage")
-					.foregroundStyle(.secondary)
-
-				HStack {
-					ForEach(Days.weekendDays) { day in
-						HStack {
-							Rectangle()
-								.fill(model.workDays.contains(day) ? .main: .clear)
-								.stroke(.main, lineWidth: 2)
-								.frame(width: 20, height: 20)
-								.overlay {
-									Image(systemName: "checkmark")
-										.font(.Bold.small)
-										.foregroundStyle(.white)
-										.opacity(model.workDays.contains(day) ? 1.0: 0.0)
-								}
-
-							Text(day.rawValue)
-								.font(.Bold.regular)
-								.foregroundStyle(.black)
-						}
-						.frame(maxWidth: .infinity)
-						.button {
-							withAnimation {
-								model.toggleDay(day)
-							}
-						}
-					}
-				}
-			}
+			.padding(.horizontal, 30)
 		}
 		.padding()
 	}
