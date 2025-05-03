@@ -10,9 +10,19 @@ import Octopus
 
 @main
 struct StempelfuchsApp: App {
+
+	// MARK: - Properties
+	@AppStorage("showOnboarding") private var showOnboarding: Bool = true
+
     var body: some Scene {
         WindowGroup {
-            OnboardingScreen()
+			Group {
+				if showOnboarding {
+					OnboardingScreen()
+				} else {
+					DashboardScreen()
+				}
+			}
         }
     }
 }

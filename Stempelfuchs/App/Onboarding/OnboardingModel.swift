@@ -17,6 +17,8 @@ class OnboardingModel: ObservableObject {
 	var federalState: FederalState = .bw
 	var weekHours: Double = 40.0
 	var workDays: [Days] = Days.defaultDays
+	var timeAccount: String = "0"
+	var isTimeAccountNegative: Bool = false
 
 	var isButtonActive: Bool { validate() }
 	var isTimeUpButtonActive: Bool { weekHours < 60.0 }
@@ -32,14 +34,18 @@ class OnboardingModel: ObservableObject {
 	// MARK: - Helper Functions
 
 	func nextStep() {
-		currentStep = currentStep.nextStep
+		if currentStep != .timeAccount {
+			currentStep = currentStep.nextStep
+		} else {
+			saveOnboardingSettings()
+		}
 	}
 
 	func validate() -> Bool {
 		switch currentStep {
 		case .name: !name.isEmpty
 		case .workHours: workDays.count > 0
-		default: false
+		case .timeAccount: !timeAccount.isEmpty
 		}
 	}
 
@@ -79,6 +85,23 @@ class OnboardingModel: ObservableObject {
 
 		if workDays.count > 1 {
 			workDays.removeAll(where: { $0 == day })
+		}
+	}
+
+	func saveOnboardingSettings() {
+		let settings: Settings = .init(
+			name: name,
+			federalState: federalState,
+			weekHours: weekHours,
+			workDays: workDays,
+			timeAccount: timeAccount,
+			isTimeAccountNegative: isTimeAccountNegative
+		)
+		do {
+			let data = try settings.encode()
+			KeychainEntry.settings.setData(with: data)
+		} catch {
+			print("Can't encode Setttings -> Data: \(error.localizedDescription)")
 		}
 	}
 }

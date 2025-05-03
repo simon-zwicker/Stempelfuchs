@@ -5,7 +5,7 @@
 //  Created by Simon Zwicker on 03.05.25.
 //
 
-enum Days: String, CaseIterable, Identifiable {
+enum Days: String, CaseIterable, Identifiable, Codable {
 
 	var id: Self { self }
 

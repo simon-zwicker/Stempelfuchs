@@ -9,4 +9,5 @@ import SwiftUI
 
 extension EnvironmentValues {
 	@Entry var onboardingModel: OnboardingModel = .init()
+	@Entry var dashboardModel: DashboardModel = .init()
 }

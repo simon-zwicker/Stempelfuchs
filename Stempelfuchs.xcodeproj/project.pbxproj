@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4FCA1A252DC507520061B8B0 /* Octopus in Frameworks */ = {isa = PBXBuildFile; productRef = 4FCA1A242DC507520061B8B0 /* Octopus */; };
+		D03F515B2DC657A100CD2117 /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = D03F515A2DC657A100CD2117 /* KeychainSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D03F515B2DC657A100CD2117 /* KeychainSwift in Frameworks */,
 				4FCA1A252DC507520061B8B0 /* Octopus in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = Stempelfuchs;
 			packageProductDependencies = (
 				4FCA1A242DC507520061B8B0 /* Octopus */,
+				D03F515A2DC657A100CD2117 /* KeychainSwift */,
 			);
 			productName = Stempelfuchs;
 			productReference = 4FCA19F32DC4FCC40061B8B0 /* Stempelfuchs.app */;
@@ -203,6 +206,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4FCA1A232DC507520061B8B0 /* XCRemoteSwiftPackageReference "Octopus" */,
+				D03F51592DC657A100CD2117 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 4FCA19F42DC4FCC40061B8B0 /* Products */;
@@ -406,7 +410,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J22R4SW38R;
+				DEVELOPMENT_TEAM = PSU9VZHG7L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -419,7 +423,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.dak-szwicker.ScanDetectExample.Stempelfuchs";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.zwicker-.Stempelfuchs";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -434,7 +438,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J22R4SW38R;
+				DEVELOPMENT_TEAM = PSU9VZHG7L;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -447,7 +451,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "de.dak-szwicker.ScanDetectExample.Stempelfuchs";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.zwicker-.Stempelfuchs";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -577,6 +581,14 @@
 				kind = branch;
 			};
 		};
+		D03F51592DC657A100CD2117 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -584,6 +596,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4FCA1A232DC507520061B8B0 /* XCRemoteSwiftPackageReference "Octopus" */;
 			productName = Octopus;
+		};
+		D03F515A2DC657A100CD2117 /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D03F51592DC657A100CD2117 /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

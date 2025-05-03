@@ -13,6 +13,7 @@ struct OnboardingScreen: View {
 
 	// MARK: - Properties
 
+	@AppStorage("showOnboarding") private var showOnboarding: Bool = true
 	@State private var model: OnboardingModel = .init()
 
 	// MARK: - View Body
@@ -23,11 +24,10 @@ struct OnboardingScreen: View {
 				Image(.sfLogo)
 					.resizable()
 					.scaledToFit()
-					.frame(height: 150)
+					.frame(height: 100)
 
 				Text("Stempelfuchs")
 					.font(.Bold.heading1)
-					.padding(.top, -25)
 
 				model.currentStep.view
 					.padding(.top, 50)
@@ -36,29 +36,38 @@ struct OnboardingScreen: View {
 			VStack {
 				Spacer()
 
-				Text("Alle persönliches Angaben werden nur lokal gespeichert.")
-					.font(.Bold.verySmall)
-					.padding(.top, 10)
-
 				VStack {
-					Text("Weiter")
-						.font(.Bold.regular)
-						.foregroundStyle(.white)
-						.frame(maxWidth: .infinity)
-						.padding(15)
-						.button {
-							withAnimation {
-								model.nextStep()
+
+					Text("Alle persönliches Angaben werden nur lokal gespeichert.")
+						.font(.Bold.verySmall)
+						.padding(.top, 15)
+
+					VStack {
+						Text(model.currentStep != .timeAccount ? "Weiter": "Los geht's")
+							.font(.Bold.regular)
+							.foregroundStyle(.white)
+							.frame(maxWidth: .infinity)
+							.padding(15)
+							.button {
+								withAnimation {
+									if model.currentStep == .timeAccount {
+										showOnboarding = false
+									}
+									model.nextStep()
+								}
 							}
-						}
-						.disabled(!model.isButtonActive)
+							.disabled(!model.isButtonActive)
+					}
+					.padding(.top, 5)
+					.background(model.isButtonActive ? .main: .secondary)
 				}
-				.padding(.top, 10)
-				.background(model.isButtonActive ? .main: .secondary)
+				.background(.white)
 			}
-//			.offset(y: 20)
 			.frame(maxWidth: .infinity)
-			.ignoresSafeArea(.keyboard)
+//			.ignoresSafeArea(.keyboard)
+		}
+		.onTapGesture {
+			hideKeyboard()
 		}
 		.environment(\.onboardingModel, model)
     }

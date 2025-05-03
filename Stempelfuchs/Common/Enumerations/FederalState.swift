@@ -5,7 +5,7 @@
 //  Created by Simon Zwicker on 02.05.25.
 //
 
-enum FederalState: String, CaseIterable, Identifiable {
+enum FederalState: String, CaseIterable, Identifiable, Codable {
 
 	var id: Self { self }
 
@@ -41,9 +41,9 @@ extension FederalState {
 		case .ni: return "Niedersachsen"
 		case .nw: return "Nordrhein-Westfalen"
 		case .rp: return "Rheinland-Pfalz"
-		case .sl: return "Sachsen"
-		case .sn: return "Sachsen-Anhalt"
-		case .st: return "Schleswig-Holstein"
+		case .sl: return "Saarland"
+		case .sn: return "Sachsen"
+		case .st: return "Sachsen-Anhalt"
 		case .sh: return "Schleswig-Holstein"
 		case .th: return "Thüringen"
 		}
