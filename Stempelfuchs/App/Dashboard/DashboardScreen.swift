@@ -27,68 +27,18 @@ struct DashboardScreen: View {
 
 				Spacer()
 			}
+			.padding()
 
-			VStack {
+			MenuComponent()
 
-				VStack {
-					HStack(spacing: 5) {
-						Text(model.timeElapsed.hourMinuteString)
-							.font(.Bold.extraLarge)
-
-						Text(model.timeElapsed.secondsString)
-							.font(.Bold.regularSmall)
-							.padding(.top, 25)
-					}
-					.foregroundStyle(model.timerIsRunning ? .primary: .secondary)
+			ScrollView {
+				LazyVStack {
+					TimerComponent()
 				}
 				.padding()
-				.frame(maxWidth: .infinity)
-				.padding(.horizontal, 35)
-
-				HStack {
-					Image(systemName:  "\(model.timerIsRunning ? "pause": "play").fill")
-						.font(.Bold.title)
-						.padding()
-						.frame(maxWidth: .infinity)
-						.foregroundStyle((model.timerIsRunning ? Color.blue: Color.green).mix(with: .black, by: 0.15))
-						.background(
-							RoundedRectangle(cornerRadius: 10)
-								.fill((model.timerIsRunning ? Color.blue: Color.green).mix(with: .black, by: 0.15).opacity(0.2))
-								.stroke((model.timerIsRunning ? Color.blue: Color.green).mix(with: .black, by: 0.15), lineWidth: 2)
-						)
-						.button {
-							withAnimation {
-								if model.timer.isNil {
-									model.startTimer()
-								} else {
-									model.pausedTimer()
-								}
-							}
-						}
-
-					if model.timer.isNotNil  {
-						Image(systemName: "stop.fill")
-							.font(.Bold.title)
-							.padding()
-							.frame(maxWidth: .infinity)
-							.foregroundStyle(.red.mix(with: .black, by: 0.15))
-							.background(
-								RoundedRectangle(cornerRadius: 10)
-									.fill(.red.mix(with: .black, by: 0.15).opacity(0.2))
-									.stroke(.red.mix(with: .black, by: 0.15), lineWidth: 2)
-							)
-							.button {
-								withAnimation {
-									model.stopTimer()
-								}
-							}
-					}
-				}
 			}
-
-			Spacer()
+			.scrollIndicators(.hidden)
 		}
-		.padding(.horizontal)
 		.environment(\.dashboardModel, model)
 		.onAppear {
 			print(model.setting)
