@@ -17,10 +17,14 @@ struct  TimerComponent: View {
     var isRunning: Bool {
         current.isNotNil && current?.isPause == false
     }
+    
+    var isPauseRunning: Bool {
+        model.showPauseTime && model.paused
+    }
 
 	// MARK: - View Body
 	var body: some View {
-		VStack {
+        VStack(spacing: 0) {
 			HStack {
 				Text(model.timeElapsed.hourMinuteString)
 					.font(.Bold.extraLarge)
@@ -32,6 +36,21 @@ struct  TimerComponent: View {
 			}
 			.foregroundStyle(isRunning ? .primary: .secondary)
 			.frame(maxWidth: .infinity)
+            
+            if model.showPauseTime {
+                HStack {
+                    Text(model.timePauseElapsed.hourMinuteString)
+                        .font(.Bold.regular)
+                    
+                    Text(model.timePauseElapsed.secondsString)
+                        .font(.Bold.verySmall)
+                        .offset(x: -5, y: 2)
+                        .frame(width: 15)
+                }
+                .foregroundStyle(isPauseRunning ? .primary: .secondary)
+                .frame(maxWidth: .infinity)
+                .padding(.bottom, 15)
+            }
 
 			HStack {
 				Image(systemName: isRunning ? "pause.fill": "play.fill")
