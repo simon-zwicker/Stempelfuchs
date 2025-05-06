@@ -15,13 +15,16 @@ struct StempelfuchsApp: App {
 	@AppStorage("showOnboarding") private var showOnboarding: Bool = true
 
     var body: some Scene {
-        WindowGroup {
+		WindowGroup {
 			Group {
 				if showOnboarding {
 					OnboardingScreen()
 				} else {
 					DashboardScreen()
 				}
+			}
+			.onAppear {
+				showOnboarding = true
 			}
         }
     }

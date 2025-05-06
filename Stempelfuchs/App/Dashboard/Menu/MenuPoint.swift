@@ -30,19 +30,32 @@ extension MenuPoint {
 	var icon: String {
 		switch self {
 		case .timer: "clock"
-		case .overview: "list.bullet"
+		case .overview: "person.badge.clock"
+		case .calendar: "calendar"
+		case .statistic: "chart.bar"
+		}
+	}
+
+	var iconSelected: String {
+		switch self {
+		case .timer: "clock.fill"
+		case .overview: "person.badge.clock.fill"
 		case .calendar: "calendar"
 		case .statistic: "chart.bar.fill"
 		}
 	}
 
 	var color: Color {
-//		switch self {
-//		case .timer: .green
-//		case .overview: .blue
-//		case .calendar: .pink
-//		case .statistic: .purple
-//		}
 		.main
+	}
+
+	@ViewBuilder
+	var view: some View {
+		switch self {
+		case .timer: TimebookingView()
+		case .overview: MyOverviewView()
+		case .calendar: CalendarView()
+		case .statistic: StatisticsView()
+		}
 	}
 }

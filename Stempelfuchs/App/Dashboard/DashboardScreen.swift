@@ -12,6 +12,7 @@ struct DashboardScreen: View {
 	// MARK: - Properties
 
 	@State private var model: DashboardModel = .init()
+	@State private var menuPoint: MenuPoint = .timer
 
 	// MARK: - View Body
 	var body: some View {
@@ -29,15 +30,9 @@ struct DashboardScreen: View {
 			}
 			.padding()
 
-			MenuComponent()
+			MenuComponent(selected: $menuPoint)
 
-			ScrollView {
-				LazyVStack {
-					TimerComponent()
-				}
-				.padding()
-			}
-			.scrollIndicators(.hidden)
+			menuPoint.view
 		}
 		.environment(\.dashboardModel, model)
 		.onAppear {
