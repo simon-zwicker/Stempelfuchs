@@ -11,12 +11,19 @@ struct TimebookingView: View {
 
 	// MARK: - Properties
     @Binding var currentEntry: TimeEntry?
+	@Binding var entries: [TimeEntry]
 
 	// MARK: - View Body
 	var body: some View {
         VStack(spacing: 30) {
             TimerComponent(current: $currentEntry)
             TimebookingWeek()
+
+			HStack {
+				ForEach(entries) { entry in
+					
+				}
+			}
 
 			Spacer()
 		}
@@ -27,6 +34,7 @@ struct TimebookingView: View {
 
 #Preview {
     @Previewable @State var entry: TimeEntry? = nil
-	TimebookingView(currentEntry: $entry)
+	@Previewable @State var entries: [TimeEntry] = []
+	TimebookingView(currentEntry: $entry, entries: $entries)
 }
 

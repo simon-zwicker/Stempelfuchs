@@ -11,8 +11,6 @@ import SwiftData
 struct DashboardScreen: View {
 
 	// MARK: - Properties
-
-	@State private var model: DashboardModel = .init()
 	@State private var menuPoint: MenuPoint = .timer
     @Query(sort: \TimeEntry.startedAt) private var timeEntries: [TimeEntry]
     @State private var todayEntries: [TimeEntry] = []
@@ -37,25 +35,29 @@ struct DashboardScreen: View {
 			MenuComponent(selected: $menuPoint)
 
             switch menuPoint {
-            case .timer: TimebookingView(currentEntry: $currentEntry)
+			case .timer: TimebookingView(currentEntry: $currentEntry, entries: $todayEntries)
             case .overview: MyOverviewView()
             case .calendar: CalendarView()
             case .statistic: StatisticsView()
             }
 		}
-		.environment(\.dashboardModel, model)
-        .onChange(of: timeEntries) { _, newValue in
-            let today = newValue.filter({ Date(timeIntervalSince1970: $0.startedAt).isToday })
-            Array(today.suffix(2)).forEach({
-                print("Start: \(Date(timeIntervalSince1970: $0.startedAt)) - End: \(Date(timeIntervalSince1970: $0.endedAt ?? 0)) - Pause: \($0.isPause)")
-            })
-        }
-        .onAppear {
-            let today = timeEntries.filter({ Date(timeIntervalSince1970: $0.startedAt).isToday })
-            today.forEach({
-                print("Start: \(Date(timeIntervalSince1970: $0.startedAt)) - End: \(Date(timeIntervalSince1970: $0.endedAt ?? 0)) - Pause: \($0.isPause)")
-            })
-        }
+		.onAppear {
+			loadTodayEntries()
+		}
+	}
+
+	private func loadTodayEntries() {
+		todayEntries = timeEntries.filter {
+			Date(timeIntervalSince1970: $0.startedAt).isToday
+		}
+		checkCurrent()
+	}
+
+	private func checkCurrent() {
+		guard let last = todayEntries.last else { return }
+		if last.endedAt == nil {
+			currentEntry = last
+		}
 	}
 }
 
