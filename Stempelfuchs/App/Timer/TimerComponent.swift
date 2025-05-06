@@ -11,7 +11,7 @@ struct  TimerComponent: View {
 
 	// MARK: - Properties
     @Environment(\.modelContext) private var context
-	@State private var model: TimerModel = .init()
+	@Environment(\.timerModel) private var model
     @Binding var current: TimeEntry?
     
     var isRunning: Bool {
@@ -24,33 +24,39 @@ struct  TimerComponent: View {
 
 	// MARK: - View Body
 	var body: some View {
-        VStack(spacing: 0) {
+		VStack(spacing: 0) {
+			Button("DEBUG Clear") {
+				try? context.delete(model: TimeEntry.self)
+				try? context.save()
+				model.stop()
+				model.clear()
+			}
 			HStack {
-				Text(model.timeElapsed.hourMinuteString)
+				Text(model.timeElapsed.elapsedHoursMinutes)
 					.font(.Bold.extraLarge)
 
-				Text(model.timeElapsed.secondsString)
+				Text(model.timeElapsed.elapsedSeconds)
 					.font(.Bold.regularSmall)
 					.padding(.top, 25)
 					.frame(width: 20)
 			}
 			.foregroundStyle(isRunning ? .primary: .secondary)
 			.frame(maxWidth: .infinity)
-            
-            if model.showPauseTime {
-                HStack {
-                    Text(model.timePauseElapsed.hourMinuteString)
-                        .font(.Bold.regular)
-                    
-                    Text(model.timePauseElapsed.secondsString)
-                        .font(.Bold.verySmall)
-                        .offset(x: -5, y: 2)
-                        .frame(width: 15)
-                }
-                .foregroundStyle(isPauseRunning ? .primary: .secondary)
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 15)
-            }
+
+			if model.showPauseTime {
+				HStack {
+					Text(model.timePauseElapsed.elapsedHoursMinutes)
+						.font(.Bold.regular)
+
+					Text(model.timePauseElapsed.elapsedSeconds)
+						.font(.Bold.verySmall)
+						.offset(x: -5, y: 2)
+						.frame(width: 15)
+				}
+				.foregroundStyle(isPauseRunning ? .primary: .secondary)
+				.frame(maxWidth: .infinity)
+				.padding(.bottom, 15)
+			}
 
 			HStack {
 				Image(systemName: isRunning ? "pause.fill": "play.fill")
@@ -65,11 +71,11 @@ struct  TimerComponent: View {
 					)
 					.button {
 						withAnimation {
-							startPause()
+							checkStartOrPause()
 						}
 					}
 
-				if model.timer.isNotNil {
+				if model.timer.isNotNil || model.pauseTimer.isNotNil {
 					Image(systemName: "stop.fill")
 						.font(.Bold.title)
 						.padding()
@@ -88,13 +94,10 @@ struct  TimerComponent: View {
 				}
 			}
 		}
-        .onAppear {
-            try? context.delete(model: TimeEntry.self)
-        }
 	}
     
     // MARK: - Helpers
-    private func startPause() {
+    private func checkStartOrPause() {
         current.isNotNil ? pause(): start()
     }
     
@@ -104,7 +107,7 @@ struct  TimerComponent: View {
         try? context.save()
         
         current = entry
-        model.start(from: entry.startedAt)
+        model.start()
     }
     
     private func pause() {
@@ -116,7 +119,7 @@ struct  TimerComponent: View {
         try? context.save()
         
         current = entry
-        model.pause()
+		model.pauseStart(state: entry.isPause)
     }
     
     private func stop() {
@@ -126,5 +129,6 @@ struct  TimerComponent: View {
         }
         current = nil
         model.stop()
+		model.clear()
     }
 }

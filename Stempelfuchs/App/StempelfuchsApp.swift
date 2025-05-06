@@ -24,9 +24,6 @@ struct StempelfuchsApp: App {
 					DashboardScreen()
 				}
 			}
-			.onAppear {
-//				showOnboarding = true
-			}
         }
         .modelContainer(for: [TimeEntry.self])
     }
