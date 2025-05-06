@@ -11,7 +11,6 @@ import Foundation
 class DashboardModel {
 
 	// MARK: - Properties
-	var setting: Settings = .empty
 	private(set) var timeElapsed: TimeInterval = 0
 	private(set) var timer: Timer?
 	private(set) var paused: Bool = false
@@ -22,24 +21,10 @@ class DashboardModel {
 	}
 
 	// MARK: - Initializer
-	init() {
-		fetchSettings()
-	}
-
-	deinit {
-		stopTimer()
-	}
+	init() {}
+	deinit { stopTimer() }
 
 	// MARK: - Helper Functions
-	private func fetchSettings() {
-		do {
-			guard let data = try KeychainEntry.settings.getData?.decode(Settings.self) else { return }
-			self.setting = data
-		} catch {
-			print("No Settings was loaded from Keychain")
-		}
-	}
-
 	func startTimer() {
 		stopTimer()
 		timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in

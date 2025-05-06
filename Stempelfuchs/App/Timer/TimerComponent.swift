@@ -10,7 +10,13 @@ import SwiftUI
 struct  TimerComponent: View {
 
 	// MARK: - Properties
+    @Environment(\.modelContext) private var context
 	@State private var model: TimerModel = .init()
+    @Binding var current: TimeEntry?
+    
+    var isRunning: Bool {
+        current.isNotNil && current?.isPause == false
+    }
 
 	// MARK: - View Body
 	var body: some View {
@@ -24,36 +30,23 @@ struct  TimerComponent: View {
 					.padding(.top, 25)
 					.frame(width: 20)
 			}
-			.foregroundStyle(model.isRunning ? .primary: .secondary)
+			.foregroundStyle(isRunning ? .primary: .secondary)
 			.frame(maxWidth: .infinity)
 
 			HStack {
-				Image(systemName: model.isRunning ? "pause.fill": "play.fill")
+				Image(systemName: isRunning ? "pause.fill": "play.fill")
 					.font(.Bold.title)
 					.padding()
 					.frame(maxWidth: .infinity)
-					.foregroundStyle(model.isRunning ? .blue: .green)
+					.foregroundStyle(isRunning ? .blue: .green)
 					.background(
 						RoundedRectangle(cornerRadius: 10)
-							.fill(
-								model.isRunning ?
-								Color.blue.opacity(0.2) :
-								Color.green.opacity(0.2)
-							)
-							.stroke(
-								model.isRunning ?
-								Color.blue :
-								Color.green,
-								lineWidth: 2
-							)
+							.fill(isRunning ? Color.blue.opacity(0.2): Color.green.opacity(0.2))
+							.stroke(isRunning ? Color.blue: Color.green, lineWidth: 2)
 					)
 					.button {
 						withAnimation {
-							if model.timer.isNil {
-								model.start()
-							} else {
-								model.pause()
-							}
+							startPause()
 						}
 					}
 
@@ -70,15 +63,49 @@ struct  TimerComponent: View {
 						)
 						.button {
 							withAnimation {
-								model.stop()
+								stop()
 							}
 						}
 				}
 			}
 		}
+        .onAppear {
+            try? context.delete(model: TimeEntry.self)
+        }
 	}
-}
-
-#Preview {
-	TimerComponent()
+    
+    // MARK: - Helpers
+    private func startPause() {
+        current.isNotNil ? pause(): start()
+    }
+    
+    private func start() {
+        let entry: TimeEntry = .init()
+        context.insert(entry)
+        try? context.save()
+        
+        current = entry
+        model.start(from: entry.startedAt)
+    }
+    
+    private func pause() {
+        current?.endedAt = .now
+        try? context.save()
+        
+        let entry: TimeEntry = .init(isPause: current?.isPause == true ? false: true)
+        context.insert(entry)
+        try? context.save()
+        
+        current = entry
+        model.pause()
+    }
+    
+    private func stop() {
+        if current?.isPause == false {
+            current?.endedAt = .now
+            try? context.save()
+        }
+        current = nil
+        model.stop()
+    }
 }

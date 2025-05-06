@@ -27,7 +27,7 @@ struct DashboardScreen: View {
 					.scaledToFit()
 					.frame(width: 50)
 
-				Text("Hallo \(model.setting.name)")
+                Text("Hallo \(AppUtils.shared.name)")
 					.font(.Bold.heading1)
 
 				Spacer()
@@ -44,9 +44,18 @@ struct DashboardScreen: View {
             }
 		}
 		.environment(\.dashboardModel, model)
-		.onAppear {
-			print(model.setting)
-		}
+        .onChange(of: timeEntries) { _, newValue in
+            let today = newValue.filter({ Date(timeIntervalSince1970: $0.startedAt).isToday })
+            Array(today.suffix(2)).forEach({
+                print("Start: \(Date(timeIntervalSince1970: $0.startedAt)) - End: \(Date(timeIntervalSince1970: $0.endedAt ?? 0)) - Pause: \($0.isPause)")
+            })
+        }
+        .onAppear {
+            let today = timeEntries.filter({ Date(timeIntervalSince1970: $0.startedAt).isToday })
+            today.forEach({
+                print("Start: \(Date(timeIntervalSince1970: $0.startedAt)) - End: \(Date(timeIntervalSince1970: $0.endedAt ?? 0)) - Pause: \($0.isPause)")
+            })
+        }
 	}
 }
 

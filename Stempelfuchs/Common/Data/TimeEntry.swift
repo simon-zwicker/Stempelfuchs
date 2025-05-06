@@ -14,8 +14,8 @@ final class TimeEntry {
     var endedAt: TimeInterval?
     var isPause: Bool
     
-    init(date: Date, isPause: Bool = false) {
-        self.startedAt = date.timeIntervalSince1970
+    init(isPause: Bool = false) {
+        self.startedAt = .now
         self.endedAt = nil
         self.isPause = isPause
     }

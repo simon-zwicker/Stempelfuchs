@@ -15,7 +15,7 @@ struct TimebookingView: View {
 	// MARK: - View Body
 	var body: some View {
         VStack(spacing: 30) {
-			TimerComponent()
+            TimerComponent(current: $currentEntry)
             TimebookingWeek()
 
 			Spacer()
