@@ -48,14 +48,4 @@ extension MenuPoint {
 	var color: Color {
 		.main
 	}
-
-	@ViewBuilder
-	var view: some View {
-		switch self {
-		case .timer: TimebookingView()
-		case .overview: MyOverviewView()
-		case .calendar: CalendarView()
-		case .statistic: StatisticsView()
-		}
-	}
 }

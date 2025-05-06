@@ -5,17 +5,17 @@
 //  Created by Simon Zwicker on 03.05.25.
 //
 
-enum Days: String, CaseIterable, Identifiable, Codable {
+enum Days: Int, CaseIterable, Identifiable, Codable {
 
 	var id: Self { self }
 
-	case monday = "Mo"
-	case tuesday = "Di"
-	case wednesday = "Mi"
-	case thursday = "Do"
-	case friday = "Fr"
-	case saturday = "Sa"
-	case sunday = "So"
+	case monday = 2
+	case tuesday = 3
+	case wednesday = 4
+	case thursday = 5
+	case friday = 6
+	case saturday = 7
+	case sunday = 1
 }
 
 extension Days {
@@ -28,18 +28,6 @@ extension Days {
 		case .friday: "Freitag"
 		case .saturday: "Samstag"
 		case .sunday: "Sonntag"
-		}
-	}
-
-	var weekday: Int {
-		switch self {
-		case .monday: 2
-		case .tuesday: 3
-		case .wednesday: 4
-		case .thursday: 5
-		case .friday: 6
-		case .saturday: 7
-		case .sunday: 1
 		}
 	}
 

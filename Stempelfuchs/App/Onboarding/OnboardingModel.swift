@@ -97,11 +97,6 @@ class OnboardingModel: ObservableObject {
 			timeAccount: timeAccount,
 			isTimeAccountNegative: isTimeAccountNegative
 		)
-		do {
-			let data = try settings.encode()
-			KeychainEntry.settings.setData(with: data)
-		} catch {
-			print("Can't encode Setttings -> Data: \(error.localizedDescription)")
-		}
+        AppUtils.shared.setSettings(settings)
 	}
 }

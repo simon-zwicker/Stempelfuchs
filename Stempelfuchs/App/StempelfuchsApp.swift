@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Octopus
+import SwiftData
 
 @main
 struct StempelfuchsApp: App {
@@ -24,8 +25,9 @@ struct StempelfuchsApp: App {
 				}
 			}
 			.onAppear {
-				showOnboarding = true
+//				showOnboarding = true
 			}
         }
+        .modelContainer(for: [TimeEntry.self])
     }
 }

@@ -11,20 +11,17 @@ import Foundation
 class DashboardModel {
 
 	// MARK: - Properties
-
 	var setting: Settings = .empty
 	private(set) var timeElapsed: TimeInterval = 0
 	private(set) var timer: Timer?
 	private(set) var paused: Bool = false
 
 	// MARK: - Computed Properties
-
 	var timerIsRunning: Bool {
 		timer.isNotNil && !paused
 	}
 
 	// MARK: - Initializer
-
 	init() {
 		fetchSettings()
 	}
@@ -34,7 +31,6 @@ class DashboardModel {
 	}
 
 	// MARK: - Helper Functions
-
 	private func fetchSettings() {
 		do {
 			guard let data = try KeychainEntry.settings.getData?.decode(Settings.self) else { return }
