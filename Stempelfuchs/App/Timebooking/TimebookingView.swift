@@ -22,20 +22,60 @@ struct TimebookingView: View {
 	var body: some View {
 		VStack(spacing: 30) {
 			TimerComponent(current: $currentEntry)
-			TimebookingWeek()
 
-			LazyVStack {
-				ForEach(entries) { entry in
-					HStack {
-						if let ended = entry.endedAt {
-							Text(entry.startedAt.hoursMinutes)
-							Spacer()
-							Text(ended.hoursMinutes)
-						}
-					}
+			HStack {
+				VStack(spacing: 10) {
+					Text("Feierabend um")
+						.font(.Regular.verySmall)
+						.foregroundStyle(.secondary)
+					Text("--:--")
+						.font(.Bold.regular)
 				}
+				.padding()
+				.frame(height: 80)
+				.frame(maxWidth: .infinity)
+				.background(
+					RoundedRectangle(cornerRadius: 10)
+						.fill(.secondary.opacity(0.05))
+						.stroke(.secondary, lineWidth: 2)
+				)
+
+				VStack(spacing: 10) {
+					Text("Pause")
+						.font(.Regular.verySmall)
+						.foregroundStyle(.secondary)
+					Text("--:--")
+						.font(.Bold.regular)
+				}
+				.padding()
+				.frame(height: 80)
+				.frame(maxWidth: .infinity)
+				.background(
+					RoundedRectangle(cornerRadius: 10)
+						.fill(.secondary.opacity(0.05))
+						.stroke(.secondary, lineWidth: 2)
+				)
+
+				VStack(spacing: 10) {
+					Text("Heute")
+						.font(.Regular.verySmall)
+						.foregroundStyle(.secondary)
+					Text("-")
+						.minimumScaleFactor(0.2)
+						.font(.Bold.regular)
+						.foregroundStyle(.primary)
+				}
+				.padding()
+				.frame(height: 80)
+				.frame(maxWidth: .infinity)
+				.background(
+					RoundedRectangle(cornerRadius: 10)
+						.fill(.secondary.opacity(0.05))
+						.stroke(.secondary, lineWidth: 2)
+				)
 			}
 
+			TimebookingWeek()
 			Spacer()
 		}
 		.environment(\.timerModel, timerModel)

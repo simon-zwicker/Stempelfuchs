@@ -25,12 +25,6 @@ struct  TimerComponent: View {
 	// MARK: - View Body
 	var body: some View {
 		VStack(spacing: 0) {
-			Button("DEBUG Clear") {
-				try? context.delete(model: TimeEntry.self)
-				try? context.save()
-				model.stop()
-				model.clear()
-			}
 			HStack {
 				Text(model.timeElapsed.elapsedHoursMinutes)
 					.font(.Bold.extraLarge)
@@ -40,6 +34,7 @@ struct  TimerComponent: View {
 					.padding(.top, 25)
 					.frame(width: 20)
 			}
+			.padding(.vertical, 10)
 			.foregroundStyle(isRunning ? .primary: .secondary)
 			.frame(maxWidth: .infinity)
 
@@ -59,38 +54,44 @@ struct  TimerComponent: View {
 			}
 
 			HStack {
-				Image(systemName: isRunning ? "pause.fill": "play.fill")
+				HStack {
+					Image(systemName: isRunning ? "pause.fill": "play.fill")
+					Text(isRunning ? "Pause": "Start")
+				}
+				.font(.Bold.title)
+				.padding()
+				.frame(maxWidth: .infinity)
+				.foregroundStyle(isRunning ? .blue: .green)
+				.background(
+					RoundedRectangle(cornerRadius: 10)
+						.fill(isRunning ? Color.blue.opacity(0.2): Color.green.opacity(0.2))
+						.stroke(isRunning ? Color.blue: Color.green, lineWidth: 2)
+				)
+				.button {
+					withAnimation {
+						checkStartOrPause()
+					}
+				}
+
+				if !model.paused && model.timer.isNotNil {
+					HStack {
+						Image(systemName: "stop.fill")
+						Text("Beenden")
+					}
 					.font(.Bold.title)
 					.padding()
 					.frame(maxWidth: .infinity)
-					.foregroundStyle(isRunning ? .blue: .green)
+					.foregroundStyle(.pink)
 					.background(
 						RoundedRectangle(cornerRadius: 10)
-							.fill(isRunning ? Color.blue.opacity(0.2): Color.green.opacity(0.2))
-							.stroke(isRunning ? Color.blue: Color.green, lineWidth: 2)
+							.fill(.pink.opacity(0.2))
+							.stroke(.pink, lineWidth: 2)
 					)
 					.button {
 						withAnimation {
-							checkStartOrPause()
+							stop()
 						}
 					}
-
-				if model.timer.isNotNil || model.pauseTimer.isNotNil {
-					Image(systemName: "stop.fill")
-						.font(.Bold.title)
-						.padding()
-						.frame(maxWidth: .infinity)
-						.foregroundStyle(.pink)
-						.background(
-							RoundedRectangle(cornerRadius: 10)
-								.fill(.pink.opacity(0.2))
-								.stroke(.pink, lineWidth: 2)
-						)
-						.button {
-							withAnimation {
-								stop()
-							}
-						}
 				}
 			}
 		}
